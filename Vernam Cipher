@@ -1,24 +1,25 @@
-import java.lang.Math;
-public class Prac2B
-{
-public static void main(String args[])
-{
-String str = new String("Kaanchi");
-char[] arText = str.toCharArray();
-String cipher = new String("MUKATIS");
-char[] arCipher = cipher.toCharArray();
-char[] encoded = new char[7];
-System.out.println("Encoded to be..");
-for(int i=0;i<arText.length;i++)
-{
-encoded[i] = (char)(arText[i] ^ arCipher[i]);
-System.out.println(encoded[i]);
-}
-System.out.println("\nDecoded to be..");
-for(int i=0;i<encoded.length; i++)
-{
-char tem = (char)(encoded[i] ^ arCipher[i]);
-System.out.println(tem);
-}
-}
+Vernam Cipher
+
+import java.util.Scanner;
+
+class practice {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+        System.out.println("Enter the one-time-pad:");
+        String otp = scan.nextLine().toLowerCase();
+
+        System.out.println("Enter the Plain Text:");
+        String pt = scan.nextLine().toLowerCase().replace(" ", "");
+
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < pt.length(); i++) {
+            int r = (alphabet.indexOf(pt.charAt(i)) + alphabet.indexOf(otp.charAt(i))) % 26;
+            result.append(alphabet.charAt(r));
+        }
+
+        System.out.println("Encrypt: " + result);
+    }
 }
