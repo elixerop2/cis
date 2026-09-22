@@ -1,72 +1,24 @@
-import java.security.*;
+AES
 import javax.crypto.*;
-import java.io.*;
-public class Prac5
-{
-Cipher ecipher;
-Cipher dcipher;
-Prac5(SecretKey key)
-{
-try
-{
-ecipher = Cipher.getInstance("AES");
-dcipher = Cipher.getInstance("AES");
-ecipher.init(Cipher.ENCRYPT_MODE, key);
-dcipher.init(Cipher.DECRYPT_MODE, key);
-}
-catch(Exception e)
-{
-System.out.println(e.getMessage());
-}
-}
-public String Encrypt(String str)
-{
-try
-{
-byte[] utf8 = str.getBytes("UTF8");
-byte[] enc = ecipher.doFinal(utf8);
-return new sun.misc.BASE64Encoder().encode(enc);
-}
-catch(Exception e)
-{
-e.printStackTrace();
-}
-return null;
-}
-public String Decrypt(String str)
-{
-try
-{
-byte[] dec = new
-sun.misc.BASE64Decoder().decodeBuffer(str);
-byte[] utf8 = dcipher.doFinal(dec);
-return new String(utf8,"UTF8");
-}
-catch(Exception e)
-{
-System.out.println(e.getMessage());
-}
-return null;
-}
-public static void main(String[] args)
-{
-SecretKey key = null;
-try
-{
-KeyGenerator keyGen =
-KeyGenerator.getInstance("AES");
-key = keyGen.generateKey();
-}
-catch(Exception e)
-{
-e.printStackTrace();
-}
-Prac5 dese = new Prac5(key);
-String o = "Kaanchi Mukati" ;
-String e = dese.Encrypt(o);
-String d = dese.Decrypt(e);
-System.out.println(o);
-System.out.println(e);
-System.out.println(d);
-}
+import java.util.*;
+
+class practice {
+    public static void main(String[] args) throws Exception {
+        SecretKey key = KeyGenerator.getInstance("AES").generateKey();
+        Cipher cipher = Cipher.getInstance("AES");
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Enter Plain Text:");
+        String pt = scan.nextLine();
+
+        // Encryption
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        String enc = Base64.getEncoder().encodeToString(cipher.doFinal(pt.getBytes()));
+        System.out.println("Encrypted: " + enc);
+
+        // Decryption
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        String dec = new String(cipher.doFinal(Base64.getDecoder().decode(enc)));
+        System.out.println("Decrypted: " + dec);
+    }
 }
