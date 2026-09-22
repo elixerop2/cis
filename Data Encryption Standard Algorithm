@@ -1,98 +1,26 @@
+DES
+
 import javax.crypto.*;
-import java.io.*;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.spec.*;
-import java.lang.*;
-import javax.crypto.spec.IvParameterSpec;
-public class Prac4
-{
-Cipher ecipher;
-Cipher dcipher;
-Prac4(SecretKey key)
-{
-try
-{
-ecipher = Cipher.getInstance("DES");
-dcipher = Cipher.getInstance("DES");
-ecipher.init(Cipher.ENCRYPT_MODE,key);
-dcipher.init(Cipher.DECRYPT_MODE,key);
-}
-catch(javax.crypto.NoSuchPaddingException e)
-{
-}
-catch(java.security.NoSuchAlgorithmException e)
-{
-}
-catch(java.security.InvalidKeyException e)
-{
-}
-}
-public String Encrypt(String str)
-{
-try
-{
-byte[] utf8 = str.getBytes("UTF8");
-byte[] enc = ecipher.doFinal(utf8);
-return new sun.misc.BASE64Encoder().encode(enc);
-}
-catch(javax.crypto.BadPaddingException e)
-{
-}
-catch(IllegalBlockSizeException e)
-{
-}
-catch(UnsupportedEncodingException e)
-{
-}
-catch(java.io.IOException e)
-{
-}
-return null;
-}
-public String Decrypt(String str)
-{
-try
-{
-byte[] dec = new
-sun.misc.BASE64Decoder().decodeBuffer(str);
-byte[] utf8 = dcipher.doFinal(dec);
-return new String(utf8,"UTF8");
-}
-catch(javax.crypto.BadPaddingException e)
-{
-}
-catch(IllegalBlockSizeException e)
-{
-}
-catch(UnsupportedEncodingException e)
-{
-}
-catch(java.io.IOException e)
-{
-}
-return null;
-}
-public static void main(String args[])
-{
-System.out.println();
-System.out.println("Encrypting string using DES
-Algorithm");
-System.out.println();
-try
-{
-SecretKey key =
-KeyGenerator.getInstance("DES").generateKey();
-Prac4 encrypter = new Prac4(key);
-String s = "Kaanchi Mukati";
-String d = "Hello";
-String encrypted = encrypter.Encrypt(s);
-String decrypted = encrypter.Decrypt(encrypted);
-System.out.println("Original:" + s);
-System.out.println("Encrypt:" + encrypted);
-System.out.println("Decrypt:" + decrypted);
-}
-catch(Exception e)
-{
-}
-}
+import java.util.Base64;
+import java.util.Scanner;
+
+class practice {
+    public static void main(String[] args) throws Exception {
+        SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+        Cipher cipher = Cipher.getInstance("DES");
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter Plain Text: ");
+        String pt = scan.nextLine();
+
+        // Encrypt
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        String encrypted = Base64.getEncoder().encodeToString(cipher.doFinal(pt.getBytes()));
+        System.out.println("Encrypted: " + encrypted);
+
+        // Decrypt
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        String decrypted = new String(cipher.doFinal(Base64.getDecoder().decode(encrypted)));
+        System.out.println("Decrypted: " + decrypted);
+    }
 }
