@@ -1,3 +1,4 @@
+Casear Cipher
 import java.io.*;
 class Prac1A
 {
@@ -15,7 +16,7 @@ FileOutputStream os = new FileOutputStream(f3);
 while((i=fis.read()) != -1)
 {
 fos.write(i);
-os.write(i+6);
+os.write(i+3);
 }
 System.out.println("File copied");
 }
