@@ -1,0 +1,100 @@
+Router>en
+Router#conf t
+Router(config)#host r1
+
+int g0/1
+ip address 192.168.1.1 255.255.255.0
+no shut
+int s0/0/0
+ip address 10.1.1.1 255.255.255.252
+no shut
+
+Router 2
+Router>en
+Router#conf t
+Router(config)#host r2
+
+int s0/0/0
+ip address 10.1.1.2 255.255.255.252
+no shut
+int s0/0/1
+ip address 10.2.2.2 255.255.255.252
+no shut
+
+Router 3
+Router>en
+Router#conf t
+Router(config)#host r3
+int g0/1
+ip address 192.168.3.1 255.255.255.0
+no shut
+int s0/0/1
+ip address 10.2.2.1 255.255.255.252
+no shut
+
+Router 1
+router ospf 1
+network 192.168.1.0 0.0.0.255 area 0
+network 10.1.1.0 0.0.0.3 area 0
+exit
+exit
+sh ip route
+
+Router 2
+router ospf 1
+network 10.1.1.0 0.0.0.3 area 0
+network 10.2.2.0 0.0.0.3 area 0
+exit
+exit
+sh ip route
+
+Router 3
+router ospf 1
+network 192.168.3.0 0.0.0.255 area 0
+network 10.2.2.0 0.0.0.3 area 0
+exit
+exit
+sh ip route
+
+Router 1
+router ospf 1
+int s0/0/0
+ip ospf message-digest-key 1 md5 ty22
+exit
+do sh ip ospf int
+
+Router 2
+router ospf 1
+int s0/0/0
+ip ospf message-digest-key 1 md5 ty22
+int s0/0/1
+ip ospf message-digest-key 1 md5 ty22
+exit
+do sh ip ospf int
+
+Router 3
+router ospf 1
+int s0/0/1
+ip ospf message-digest-key 1 md5 ty22
+exit
+do sh ip ospf int
+
+Configure Router 3 to support SSH connections
+ip domain-name tyitsecurity.com
+enable secret ty31
+
+username romerio privilege 15 secret ty22
+line vty 0 4
+login local
+transport input ssh
+exit
+crypto key generate rsa
+------How many bits in the modulus? 1024
+do sh ip ssh
+
+Check results
+Open Command Prompt of PC – C.
+Enter telnet 192.168.3.1, the connection will open.
+Enter ssh -l romerio 192.168.3.1
+Password will be asked type ty22 which will not be visible but will be accepted by the
+system. Router 3 configuration is now accessible from PC - C
