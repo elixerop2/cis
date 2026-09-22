@@ -1,10 +1,12 @@
+Diffie-Hellman
+
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.util.*;
 import java.math.BigInteger.*;
 import java.math.*;
-class Prac3
+class practice
 {
 public static void main(String args[])
 {
