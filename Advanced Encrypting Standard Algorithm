@@ -1,4 +1,3 @@
-AES
 import javax.crypto.*;
 import java.util.*;
 
