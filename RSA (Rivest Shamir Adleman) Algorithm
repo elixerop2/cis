@@ -1,5 +1,3 @@
-RSA
-
 import java.math.*;
 import java.security.*;
 public class practice
